@@ -1,4 +1,4 @@
-cdpackage com.ucs.mobileappproject03;
+package com.ucs.mobileappproject03;
 
 import androidx.appcompat.app.AppCompatActivity;
 
