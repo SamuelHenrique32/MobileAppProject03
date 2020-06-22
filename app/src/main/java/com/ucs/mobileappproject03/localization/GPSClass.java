@@ -1,4 +1,4 @@
-package com.ucs.mobileappproject03;
+package com.ucs.mobileappproject03.localization;
 
 import java.io.Serializable;
 
