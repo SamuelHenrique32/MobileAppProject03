@@ -24,11 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-/**
- * A demo of the Heatmaps library. Demonstrates how the HeatmapTileProvider can be used to create
- * a colored map overlay that visualises many points of weighted importance/intensity, with
- * different colors representing areas of high and low concentration/combined intensity of points.
- */
 public class HeatmapsDemoActivity extends BaseDemoActivity {
 
     /**
@@ -84,14 +79,6 @@ public class HeatmapsDemoActivity extends BaseDemoActivity {
             getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-25, 143), 4));
         }
 
-        // Set up the spinner/dropdown list
-        Spinner spinner = findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.heatmaps_datasets_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spinner.setAdapter(adapter);
-        //spinner.setOnItemSelectedListener(new SpinnerActivity());
-
         try {
             mLists.put(getString(R.string.police_stations), new DataSet(readItems(R.raw.police),
                     getString(R.string.police_stations_url)));
@@ -140,37 +127,7 @@ public class HeatmapsDemoActivity extends BaseDemoActivity {
         mOverlay.clearTileCache();
         mDefaultOpacity = !mDefaultOpacity;
     }
-
-    // Dealing with spinner choices
-    public class SpinnerActivity implements AdapterView.OnItemSelectedListener {
-        public void onItemSelected(AdapterView<?> parent, View view,
-                                   int pos, long id) {
-            String dataset = parent.getItemAtPosition(pos).toString();
-
-            TextView attribution = findViewById(R.id.attribution);
-
-            // Check if need to instantiate (avoid setData etc twice)
-            if (mProvider == null) {
-                mProvider = new HeatmapTileProvider.Builder().data(
-                        mLists.get(getString(R.string.police_stations)).getData()).build();
-                mOverlay = getMap().addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
-                // Render links
-                attribution.setMovementMethod(LinkMovementMethod.getInstance());
-            } else {
-                mProvider.setData(mLists.get(dataset).getData());
-                mOverlay.clearTileCache();
-            }
-            // Update attribution
-            attribution.setText(Html.fromHtml(String.format(getString(R.string.attrib_format),
-                    mLists.get(dataset).getUrl())));
-
-        }
-
-        public void onNothingSelected(AdapterView<?> parent) {
-            // Another interface callback
-        }
-    }
-
+    
     // Datasets from http://data.gov.au
     private ArrayList<LatLng> readItems(int resource) throws JSONException {
         ArrayList<LatLng> list = new ArrayList<>();

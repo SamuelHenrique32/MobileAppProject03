@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.ucs.mobileappproject03.bd.BDSQLiteHelper;
+import com.ucs.mobileappproject03.localization.GPSClass;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -141,7 +142,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Double latPoint = location.getLatitude();
         Double lngPoint = location.getLongitude();
 
-//        latitude.setText(latPoint.toString());
-//        longitude.setText(lngPoint.toString());
+        GPSClass gps = new GPSClass();
+        gps.setLatitude(latPoint.toString());
+        gps.setLongitude(lngPoint.toString());
+
+        bd.addPosicao(gps);
     }
 }
