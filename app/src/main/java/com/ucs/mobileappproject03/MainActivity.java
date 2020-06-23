@@ -23,10 +23,10 @@ import android.widget.Button;
 import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.ucs.mobileappproject03.bd.BDSQLiteHelper;
-import com.ucs.mobileappproject03.localization.BaseDemoActivity;
 import com.ucs.mobileappproject03.localization.GPSClass;
 import com.ucs.mobileappproject03.localization.HeatmapsDemoActivity;
-import com.ucs.mobileappproject03.localization.HeatmapsDemoActivity;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -155,7 +155,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         gps.setLongitude(lngPoint.toString());
         gps.setData("Some data");
 
-        bd.addPosicao(gps);
+        bd.addPosition(gps);
+
+        //ArrayList<GPSClass> registers = bd.getAllgps();
     }
 
     public void goToHeatMap(View view){

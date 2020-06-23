@@ -44,12 +44,12 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
         this.onCreate(db);
     }
 
-    public long addPosicao(GPSClass gps)
+    public long addPosition(GPSClass gps)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(LATITUDE, gps.getLatitude());
-        values.put(LONGITUDE, gps.getLatitude());
+        values.put(LONGITUDE, gps.getLongitude());
         values.put(DATA, gps.getData());
         long gpsID = db.insert(TABELA_GPS, null, values);
         db.close();
@@ -57,7 +57,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
         return gpsID;
     }
 
-    public GPSClass getImagem(int id)
+    public GPSClass getPosition(int id)
     {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABELA_GPS, // a. tabela
