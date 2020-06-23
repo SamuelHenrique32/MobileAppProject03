@@ -161,6 +161,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void goToHeatMap(View view){
-        startActivity(new Intent(this, HeatmapsDemoActivity.class));
+        ArrayList<GPSClass> objects = bd.getAllgps();
+        Bundle extra = new Bundle();
+        extra.putSerializable("objects",objects);
+
+        Intent intent = new Intent(this, HeatmapsDemoActivity.class);
+        intent.putExtra("extra", extra);
+        startActivity(intent);
     }
 }

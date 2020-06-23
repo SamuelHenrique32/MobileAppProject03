@@ -1,6 +1,7 @@
 package com.ucs.mobileappproject03.localization;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -26,6 +27,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class HeatmapsDemoActivity extends BaseDemoActivity {
+
+    ArrayList<LatLng> latLgnRegisters;
 
     /**
      * Alternative radius for convolution
@@ -76,6 +79,10 @@ public class HeatmapsDemoActivity extends BaseDemoActivity {
 
     @Override
     protected void startDemo(boolean isRestore) {
+
+        Bundle extra = getIntent().getBundleExtra("extra");
+        ArrayList<LatLng> latLgnRegisters = (ArrayList<LatLng>) extra.getSerializable("objects");
+
         if (!isRestore) {
             getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-25, 143), 4));
         }
