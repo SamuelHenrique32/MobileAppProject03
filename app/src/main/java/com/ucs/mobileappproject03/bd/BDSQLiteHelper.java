@@ -29,7 +29,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        String CREATE_TABLE = "CREATE TABLE imagens ("+
+        String CREATE_TABLE = "CREATE TABLE TABELA_GPS ("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 "latitude TEXT,"+
                 "longitude TEXT,"+
@@ -40,7 +40,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-        db.execSQL("DROP TABLE IF EXISTS imagens");
+        db.execSQL("DROP TABLE IF EXISTS TABELA_GPS");
         this.onCreate(db);
     }
 

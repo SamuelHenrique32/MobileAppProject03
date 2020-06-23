@@ -9,20 +9,24 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
-
 import com.google.android.material.navigation.NavigationView;
 import com.ucs.mobileappproject03.bd.BDSQLiteHelper;
+import com.ucs.mobileappproject03.localization.BaseDemoActivity;
 import com.ucs.mobileappproject03.localization.GPSClass;
+import com.ucs.mobileappproject03.localization.HeatmapsDemoActivity;
+import com.ucs.mobileappproject03.localization.HeatmapsDemoActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -32,8 +36,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+    Button loadMapButton;
 
-    private BDSQLiteHelper bd;
+    public BDSQLiteHelper bd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +70,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.commit();
 
         bd = new BDSQLiteHelper(this.getBaseContext());
-        pedirPermissoes();
+
+        loadMapButton = findViewById(R.id.button);
+
+        askForPermissions();
     }
 
     @Override
@@ -90,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void pedirPermissoes() {
+    private void askForPermissions() {
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED
@@ -145,7 +153,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         GPSClass gps = new GPSClass();
         gps.setLatitude(latPoint.toString());
         gps.setLongitude(lngPoint.toString());
+        gps.setData("Some data");
 
         bd.addPosicao(gps);
+    }
+
+    public void goToHeatMap(View view){
+        startActivity(new Intent(this, HeatmapsDemoActivity.class));
     }
 }

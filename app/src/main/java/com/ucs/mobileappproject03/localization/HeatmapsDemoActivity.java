@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.google.maps.android.heatmaps.Gradient;
+import com.ucs.mobileappproject03.MainActivity;
 import com.ucs.mobileappproject03.R;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -127,8 +128,7 @@ public class HeatmapsDemoActivity extends BaseDemoActivity {
         mOverlay.clearTileCache();
         mDefaultOpacity = !mDefaultOpacity;
     }
-    
-    // Datasets from http://data.gov.au
+
     private ArrayList<LatLng> readItems(int resource) throws JSONException {
         ArrayList<LatLng> list = new ArrayList<>();
         InputStream inputStream = getResources().openRawResource(resource);
