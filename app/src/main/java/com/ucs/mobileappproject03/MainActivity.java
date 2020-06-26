@@ -13,6 +13,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -20,15 +24,18 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.ucs.mobileappproject03.bd.BDSQLiteHelper;
 import com.ucs.mobileappproject03.localization.GPSClass;
 import com.ucs.mobileappproject03.localization.HeatmapsDemoActivity;
+import com.ucs.mobileappproject03.pedometer.StepDetector;
+import com.ucs.mobileappproject03.pedometer.StepListener;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SensorEventListener, StepListener {
 
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
@@ -37,6 +44,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     Button loadMapButton;
+
+    //-------pedometer configurations-------
+    private StepDetector simpleStepDetector;
+    private SensorManager sensorManager;
+    private Sensor accel;
+    private int numSteps;
+    private int numStepsAux;
+    TextView stepsQtt;
+    //-------pedometer configurations-------
 
     public BDSQLiteHelper bd;
 
@@ -72,6 +88,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bd = new BDSQLiteHelper(this.getBaseContext());
 
         loadMapButton = findViewById(R.id.button);
+
+        //-------pedometer configurations-------
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        simpleStepDetector = new StepDetector();
+        simpleStepDetector.registerListener(this);
+        sensorManager.registerListener(MainActivity.this, accel, SensorManager.SENSOR_DELAY_FASTEST);
+        stepsQtt = (TextView) findViewById(R.id.stepsQtt);
+        //-------pedometer configurations-------
 
         askForPermissions();
     }
@@ -155,7 +180,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         gps.setLongitude(lngPoint.toString());
         gps.setData("Some data");
 
-        bd.addPosition(gps);
+        if(numStepsAux > 10)
+        {
+            numStepsAux = 0;
+            bd.addPosition(gps);
+        }
 
         //ArrayList<GPSClass> registers = bd.getAllgps();
     }
@@ -169,4 +198,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intent.putExtra("extra", extra);
         startActivity(intent);
     }
+
+    public void createGPSpoints(View view)
+    {
+        //pontos ao redor do Shopping Iguatemi - Caxias do Sul
+        final ArrayList<GPSClass> test = new ArrayList<>();
+        test.add(new GPSClass("-29.176038","-51.219557","data"));
+        test.add(new GPSClass("-29.175973","-51.219703","data"));
+        test.add(new GPSClass("-29.175876","-51.219902","data"));
+        test.add(new GPSClass("-29.175658","-51.220337","data"));
+        test.add(new GPSClass("-29.176111","-51.219406","data"));
+        test.add(new GPSClass("-29.175831","-51.221119","data"));
+        test.add(new GPSClass("-29.176077","-51.221172","data"));
+        test.add(new GPSClass("-29.176324","-51.221148","data"));
+        test.add(new GPSClass("-29.176649","-51.221092","data"));
+        test.add(new GPSClass("-29.176130","-51.219306","data"));
+        test.add(new GPSClass("-29.175995","-51.219118","data"));
+        test.add(new GPSClass("-29.175831","-51.219027","data"));
+    }
+
+    //-------pedometer configurations-------
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) { }
+
+    @Override
+    public void onSensorChanged(SensorEvent event)
+    {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+        {
+            simpleStepDetector.updateAccel(event.timestamp, event.values[0], event.values[1], event.values[2]);
+        }
+    }
+
+    @Override
+    public void step(long timeNs)
+    {
+        numSteps++;
+        numStepsAux++;
+
+        if(numStepsAux > 10)
+        {
+            configurarServico();
+        }
+    }
+    //-------pedometer configurations-------
 }
