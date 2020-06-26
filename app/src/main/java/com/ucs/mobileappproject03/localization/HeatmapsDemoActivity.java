@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
@@ -22,13 +23,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import com.google.android.gms.maps.model.LatLng;
 
 public class HeatmapsDemoActivity extends BaseDemoActivity {
 
-    ArrayList<LatLng> latLgnRegisters;
+    private ArrayList<GPSClass> latLgnRegisters;
+
+    private final int DEFAULT_ZOOM = 15;
 
     /**
      * Alternative radius for convolution
@@ -81,7 +86,7 @@ public class HeatmapsDemoActivity extends BaseDemoActivity {
     protected void startDemo(boolean isRestore) {
 
         Bundle extra = getIntent().getBundleExtra("extra");
-        ArrayList<LatLng> latLgnRegisters = (ArrayList<LatLng>) extra.getSerializable("objects");
+        this.latLgnRegisters = (ArrayList<GPSClass>) extra.getSerializable("objects");
 
         if (!isRestore) {
             getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-25, 143), 4));
@@ -99,11 +104,6 @@ public class HeatmapsDemoActivity extends BaseDemoActivity {
         mProvider = new HeatmapTileProvider.Builder().data(
                 mLists.get(getString(R.string.police_stations)).getData()).build();
         mOverlay = getMap().addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
-
-        // Make the handler deal with the map
-        // Input: list of WeightedLatLngs, minimum and maximum zoom levels to calculate custom
-        // intensity from, and the map to draw the heatmap on
-        // radius, gradient and opacity not specified, so default are used
     }
 
     public void changeRadius(View view) {
@@ -138,15 +138,20 @@ public class HeatmapsDemoActivity extends BaseDemoActivity {
 
     private ArrayList<LatLng> readItems(int resource) throws JSONException {
         ArrayList<LatLng> list = new ArrayList<>();
-        InputStream inputStream = getResources().openRawResource(resource);
-        String json = new Scanner(inputStream).useDelimiter("\\A").next();
-        JSONArray array = new JSONArray(json);
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject object = array.getJSONObject(i);
-            double lat = object.getDouble("lat");
-            double lng = object.getDouble("lng");
+
+        for (int i = 0; i < this.latLgnRegisters.size(); i++) {
+            double lat = Double.parseDouble(String.valueOf(this.latLgnRegisters.get(i).getLatitude()));
+            double lng = Double.parseDouble(String.valueOf(this.latLgnRegisters.get(i).getLongitude()));
             list.add(new LatLng(lat, lng));
         }
+
+        GoogleMap map = getMap();
+
+        LatLng coordinate = new LatLng(Double.parseDouble(String.valueOf(this.latLgnRegisters.get(0).getLatitude())),
+                Double.parseDouble(String.valueOf(this.latLgnRegisters.get(0).getLongitude())));
+
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, DEFAULT_ZOOM));
+
         return list;
     }
 
