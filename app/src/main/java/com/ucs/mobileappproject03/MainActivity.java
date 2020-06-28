@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public BDSQLiteHelper bd;
 
+    private final int STEPS_TO_SAVE_REGISTER = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         gps.setLongitude(lngPoint.toString());
         gps.setData("Some data");
 
-        if(numStepsAux > 10)
+        if(numStepsAux > STEPS_TO_SAVE_REGISTER)
         {
             numStepsAux = 0;
             bd.addPosition(gps);
@@ -201,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void createGPSpoints(View view)
     {
-        //pontos ao redor do Shopping Iguatemi - Caxias do Sul
+        // Pontos ao redor do Shopping Iguatemi - Caxias do Sul
         final ArrayList<GPSClass> test = new ArrayList<>();
         test.add(new GPSClass("-29.176038","-51.219557","data"));
         test.add(new GPSClass("-29.175973","-51.219703","data"));
@@ -236,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         numSteps++;
         numStepsAux++;
 
-        if(numStepsAux > 10)
+        if(numStepsAux > STEPS_TO_SAVE_REGISTER)
         {
             configurarServico();
         }
