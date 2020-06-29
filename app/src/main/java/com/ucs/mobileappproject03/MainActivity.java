@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.ucs.mobileappproject03.bd.BDSQLiteHelper;
+import com.ucs.mobileappproject03.bd.Store;
 import com.ucs.mobileappproject03.localization.GPSClass;
 import com.ucs.mobileappproject03.localization.HeatmapsDemoActivity;
 import com.ucs.mobileappproject03.pedometer.StepDetector;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     Button loadMapButton;
+    public boolean saveGPSRegistersAsArray = true;
 
     //-------pedometer configurations-------
     private StepDetector simpleStepDetector;
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public BDSQLiteHelper bd;
 
     private final int STEPS_TO_SAVE_REGISTER = 10;
+    private final int STEPS_DAILY_GOAL = 4500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         bd = new BDSQLiteHelper(this.getBaseContext());
 
-        loadMapButton = findViewById(R.id.button);
+        //loadMapButton = findViewById(R.id.button);
 
         //-------pedometer configurations-------
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -182,23 +185,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         gps.setLongitude(lngPoint.toString());
         gps.setData("Some data");
 
+        if(saveGPSRegistersAsArray){
+            Store.objects = bd.getAllgps();
+            saveGPSRegistersAsArray = false;
+        }
+
         if(numStepsAux > STEPS_TO_SAVE_REGISTER)
         {
             numStepsAux = 0;
             bd.addPosition(gps);
+            Store.objects = bd.getAllgps();
         }
 
         //ArrayList<GPSClass> registers = bd.getAllgps();
     }
 
     public void goToHeatMap(View view){
-        ArrayList<GPSClass> objects = bd.getAllgps();
-        Bundle extra = new Bundle();
-        extra.putSerializable("objects",objects);
 
-        Intent intent = new Intent(this, HeatmapsDemoActivity.class);
-        intent.putExtra("extra", extra);
-        startActivity(intent);
     }
 
     public void createGPSpoints(View view)

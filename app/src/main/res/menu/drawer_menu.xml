@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="General">
+    <item android:title="Pedômetro">
         <menu>
             <item
                 android:id="@+id/home"
@@ -9,21 +9,17 @@
                 android:title="Home" />
             <item
                 android:id="@+id/another"
-                android:icon="@drawable/ic_baseline_group_add_24"
-                android:title="Another Menu" />
+                android:icon="@drawable/baseline_explore_black_18dp"
+                android:title="Mapa" />
         </menu>
     </item>
 
-    <item android:title="Communication">
+    <item android:title="Meus Dados">
         <menu>
             <item
                 android:id="@+id/home1"
-                android:icon="@drawable/ic_baseline_home_24"
-                android:title="Home" />
-            <item
-                android:id="@+id/another1"
-                android:icon="@drawable/ic_baseline_group_add_24"
-                android:title="Another Menu" />
+                android:icon="@drawable/baseline_analytics_black_18dp"
+                android:title="Estatísticas" />
         </menu>
     </item>
 

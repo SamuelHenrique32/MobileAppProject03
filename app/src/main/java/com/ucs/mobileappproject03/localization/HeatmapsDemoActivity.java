@@ -1,5 +1,6 @@
 package com.ucs.mobileappproject03.localization;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.google.maps.android.heatmaps.Gradient;
+import com.ucs.mobileappproject03.MainActivity;
 import com.ucs.mobileappproject03.R;
 import org.json.JSONException;
 import java.util.ArrayList;
@@ -94,5 +96,10 @@ public class HeatmapsDemoActivity extends BaseDemoActivity {
         public String getUrl() {
             return mUrl;
         }
+    }
+
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
