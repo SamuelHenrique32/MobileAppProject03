@@ -17,7 +17,7 @@
     <item android:title="Meus Dados">
         <menu>
             <item
-                android:id="@+id/home1"
+                android:id="@+id/statistics"
                 android:icon="@drawable/baseline_analytics_black_18dp"
                 android:title="Estatísticas" />
         </menu>

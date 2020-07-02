@@ -125,6 +125,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentTransaction.commit();
         }
 
+        if(menuItem.getItemId() == R.id.statistics){
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_fragment, new StatisticsFragment());
+            fragmentTransaction.commit();
+        }
+
         return true;
     }
 

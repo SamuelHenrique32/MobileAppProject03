@@ -8,11 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.ucs.mobileappproject03.bd.Store;
 import com.ucs.mobileappproject03.localization.GPSClass;
 import com.ucs.mobileappproject03.localization.HeatmapsDemoActivity;
-
 import java.util.ArrayList;
 
 public class FragmentSecond extends Fragment {
