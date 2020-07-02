@@ -31,10 +31,13 @@ import com.ucs.mobileappproject03.bd.BDSQLiteHelper;
 import com.ucs.mobileappproject03.bd.Store;
 import com.ucs.mobileappproject03.localization.GPSClass;
 import com.ucs.mobileappproject03.localization.HeatmapsDemoActivity;
+import com.ucs.mobileappproject03.localization.StepsClass;
 import com.ucs.mobileappproject03.pedometer.StepDetector;
 import com.ucs.mobileappproject03.pedometer.StepListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SensorEventListener, StepListener {
 
@@ -53,12 +56,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Sensor accel;
     private int numSteps;
     private int numStepsAux;
+    private int numStepsAuxJr;
     TextView stepsQtt;
     //-------pedometer configurations-------
 
     public BDSQLiteHelper bd;
 
     private final int STEPS_TO_SAVE_REGISTER = 10;
+    private final int STEPS_TO_SAVE_STEPS = 100;
     private final int STEPS_DAILY_GOAL = 4500;
 
     @Override
@@ -187,10 +192,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Double latPoint = location.getLatitude();
         Double lngPoint = location.getLongitude();
 
+        Date currentTime = Calendar.getInstance().getTime();
+
         GPSClass gps = new GPSClass();
         gps.setLatitude(latPoint.toString());
         gps.setLongitude(lngPoint.toString());
-        gps.setData("Some data");
+        gps.setData(currentTime.toString());
 
         if(saveGPSRegistersAsArray){
             Store.objects = bd.getAllgps();
@@ -247,10 +254,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     {
         numSteps++;
         numStepsAux++;
+        numStepsAuxJr++;
 
         if(numStepsAux > STEPS_TO_SAVE_REGISTER)
         {
             configurarServico();
+        }
+
+        if(numStepsAuxJr > STEPS_TO_SAVE_STEPS)
+        {
+            Date currentTime = Calendar.getInstance().getTime();
+
+            StepsClass steps = new StepsClass();
+            steps.setPassos(Integer.toString(numStepsAuxJr));
+            steps.setData(currentTime.toString());
+
+            bd.addSteps(steps);
+
+            numStepsAuxJr = 0;
         }
     }
     //-------pedometer configurations-------

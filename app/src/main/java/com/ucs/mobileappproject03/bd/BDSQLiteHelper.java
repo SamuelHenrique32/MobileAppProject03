@@ -7,19 +7,34 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.ucs.mobileappproject03.localization.GPSClass;
+import com.ucs.mobileappproject03.localization.StepsClass;
 
 import java.util.ArrayList;
 
 public class BDSQLiteHelper extends SQLiteOpenHelper
 {
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "gpsDB";
+
+    private static final String DATABASE_NAME = "mobileAppProject03DB";
+
+    //-------tabela para GPS-------
     private static final String TABELA_GPS = "tabela_GPS";
     private static final String ID = "id";
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
     private static final String DATA = "data";
     private static final String[] COLUNAS = {ID, LATITUDE, LONGITUDE, DATA};
+    //-------tabela para GPS-------
+
+
+    //-------tabela para PASSOS-------
+    private static final String TABELA_PASSOS = "tabela_PASSOS";
+    private static final String IDpassos = "id_passos";
+    private static final String PASSOS = "passos";
+    private static final String DATA_PASSOS = "data_passos";
+    private static final String[] COLUNAS_PASSOS = {IDpassos, PASSOS, DATA_PASSOS};
+    //-------tabela para PASSOS-------
+
 
     public BDSQLiteHelper(Context context)
     {
@@ -35,6 +50,12 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
                 "longitude TEXT,"+
                 "data TEXT)";
         db.execSQL(CREATE_TABLE);
+
+        String CREATE_TABLE_PASSOS = "CREATE TABLE TABELA_PASSOS ("+
+                "id_passos INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "passos TEXT,"+
+                "data_passos TEXT)";
+        db.execSQL(CREATE_TABLE_PASSOS);
     }
 
     @Override
@@ -104,5 +125,45 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
         }
 
         return listaGPS;
+    }
+
+    public long addSteps(StepsClass steps)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PASSOS, steps.getPassos());
+        values.put(DATA_PASSOS, steps.getData());
+        long stepsID = db.insert(TABELA_PASSOS, null, values);
+        db.close();
+
+        return stepsID;
+    }
+
+    private StepsClass cursorToSteps(Cursor cursor)
+    {
+        StepsClass steps = new StepsClass();
+        steps.setId(Integer.parseInt(cursor.getString(0)));
+        steps.setPassos(cursor.getString(1));
+        steps.setData(cursor.getString(2));
+
+        return steps;
+    }
+
+    public ArrayList<StepsClass> getAllSteps()
+    {
+        ArrayList<StepsClass> listaPassos = new ArrayList<StepsClass>();
+
+        String query = "SELECT * FROM " + TABELA_PASSOS + " ORDER BY " + IDpassos;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                StepsClass steps = cursorToSteps(cursor);
+                listaPassos.add(steps);
+            } while (cursor.moveToNext());
+        }
+
+        return listaPassos;
     }
 }
