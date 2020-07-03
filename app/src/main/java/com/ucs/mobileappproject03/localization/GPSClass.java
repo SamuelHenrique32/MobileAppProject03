@@ -7,11 +7,11 @@ public class GPSClass implements Serializable
     private int id;
     private String latitude;
     private String longitude;
-    private String data;
+    private long data;
 
     public GPSClass(){}
 
-    public GPSClass(String latitude, String longitude, String data)
+    public GPSClass(String latitude, String longitude, long data)
     {
         this.latitude = latitude;
         this.longitude = longitude;
@@ -34,11 +34,11 @@ public class GPSClass implements Serializable
         this.longitude = longitude;
     }
 
-    public String getData() {
+    public long getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(long data) {
         this.data = data;
     }
 

@@ -10,6 +10,8 @@ import com.ucs.mobileappproject03.localization.GPSClass;
 import com.ucs.mobileappproject03.localization.StepsClass;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class BDSQLiteHelper extends SQLiteOpenHelper
 {
@@ -35,6 +37,8 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
     private static final String[] COLUNAS_PASSOS = {IDpassos, PASSOS, DATA_PASSOS};
     //-------tabela para PASSOS-------
 
+    //constante do carajo
+    private final long MILLISECONDSBYDAY = 86400000;
 
     public BDSQLiteHelper(Context context)
     {
@@ -48,13 +52,13 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 "latitude TEXT,"+
                 "longitude TEXT,"+
-                "data TEXT)";
+                "data NUMBER)";
         db.execSQL(CREATE_TABLE);
 
         String CREATE_TABLE_PASSOS = "CREATE TABLE TABELA_PASSOS ("+
                 "id_passos INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                "passos TEXT,"+
-                "data_passos TEXT)";
+                "passos NUMBER,"+
+                "data_passos NUMBER)";
         db.execSQL(CREATE_TABLE_PASSOS);
     }
 
@@ -104,7 +108,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
         gps.setId(Integer.parseInt(cursor.getString(0)));
         gps.setLatitude(cursor.getString(1));
         gps.setLongitude(cursor.getString(2));
-        gps.setData(cursor.getString(3));
+        gps.setData(cursor.getLong(3));
 
         return gps;
     }
@@ -113,7 +117,21 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
     {
         ArrayList<GPSClass> listaGPS = new ArrayList<GPSClass>();
 
-        String query = "SELECT * FROM " + TABELA_GPS + " ORDER BY " + ID;
+        Date hoje = new Date();
+        Calendar inicioDia = Calendar.getInstance();
+        Calendar fimDia = Calendar.getInstance();
+
+        inicioDia.setTime(hoje);
+        inicioDia.set(Calendar.HOUR,0);
+        inicioDia.set(Calendar.MINUTE,0);
+        inicioDia.set(Calendar.SECOND,0);
+
+        fimDia.setTime(hoje);
+
+        long beginDay = inicioDia.getTime().getTime();
+        long endDay = fimDia.getTime().getTime();
+
+        String query = "SELECT * FROM " + TABELA_GPS + " WHERE " + DATA + " BETWEEN " + beginDay + " AND " + endDay + " ORDER BY " + ID;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
@@ -143,8 +161,8 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
     {
         StepsClass steps = new StepsClass();
         steps.setId(Integer.parseInt(cursor.getString(0)));
-        steps.setPassos(cursor.getString(1));
-        steps.setData(cursor.getString(2));
+        steps.setPassos(cursor.getLong(1));
+        steps.setData(cursor.getLong(2));
 
         return steps;
     }
@@ -154,6 +172,59 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
         ArrayList<StepsClass> listaPassos = new ArrayList<StepsClass>();
 
         String query = "SELECT * FROM " + TABELA_PASSOS + " ORDER BY " + IDpassos;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                StepsClass steps = cursorToSteps(cursor);
+                listaPassos.add(steps);
+            } while (cursor.moveToNext());
+        }
+
+        return listaPassos;
+    }
+
+    public ArrayList<StepsClass> get1WeekSteps()
+    {
+        ArrayList<StepsClass> listaPassos = new ArrayList<StepsClass>();
+
+        Date hoje = new Date();
+        Calendar fimDia = Calendar.getInstance();
+
+        fimDia.setTime(hoje);
+
+        long beginDay = Calendar.getInstance().getTime().getTime() - MILLISECONDSBYDAY*6;
+        long endDay = fimDia.getTime().getTime();
+
+        String query = "SELECT * FROM " + TABELA_PASSOS + " WHERE " + DATA_PASSOS + " BETWEEN " + beginDay + " AND " + endDay + " ORDER BY " + IDpassos;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                StepsClass steps = cursorToSteps(cursor);
+                listaPassos.add(steps);
+            } while (cursor.moveToNext());
+        }
+
+        return listaPassos;
+    }
+
+    public ArrayList<StepsClass> get1MonthSteps()
+    {
+        ArrayList<StepsClass> listaPassos = new ArrayList<StepsClass>();
+
+        Date hoje = new Date();
+        Calendar fimDia = Calendar.getInstance();
+
+        fimDia.setTime(hoje);
+
+        long beginDay = Calendar.getInstance().getTime().getTime() - MILLISECONDSBYDAY*30;
+        long endDay = fimDia.getTime().getTime();
+
+//        String query = "SELECT FROM " + TABELA_PASSOS + " WHERE " + DATA_PASSOS + " BETWEEN " + beginDay + " AND " + endDay + " ORDER BY " + IDpassos;
+        String query = "SELECT SUM( " + PASSOS + " ) FROM " + TABELA_PASSOS + " WHERE " + DATA_PASSOS + " BETWEEN " + beginDay + " AND " + endDay + " ORDER BY " + IDpassos;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 

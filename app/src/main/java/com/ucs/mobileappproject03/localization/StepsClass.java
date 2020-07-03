@@ -5,30 +5,30 @@ import java.io.Serializable;
 public class StepsClass implements Serializable
 {
     private int id;
-    private String passos;
-    private String data;
+    private long passos;
+    private long data;
 
     public  StepsClass(){}
 
-    public StepsClass(String passos, String data)
+    public StepsClass(long passos, long data)
     {
         this.passos = passos;
         this.data = data;
     }
 
-    public String getPassos() {
+    public long getPassos() {
         return passos;
     }
 
-    public void setPassos(String passos) {
+    public void setPassos(long passos) {
         this.passos = passos;
     }
 
-    public String getData() {
+    public long getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(long data) {
         this.data = data;
     }
 

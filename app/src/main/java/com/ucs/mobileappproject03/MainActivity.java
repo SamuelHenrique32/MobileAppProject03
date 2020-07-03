@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private final int STEPS_TO_SAVE_REGISTER = 10;
     private final int STEPS_TO_SAVE_STEPS = 100;
     private final int STEPS_DAILY_GOAL = 4500;
+    private final long MILLISECONDSBYDAY = 86400000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,12 +193,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Double latPoint = location.getLatitude();
         Double lngPoint = location.getLongitude();
 
-        Date currentTime = Calendar.getInstance().getTime();
+        long currentTime = Calendar.getInstance().getTime().getTime();
 
         GPSClass gps = new GPSClass();
         gps.setLatitude(latPoint.toString());
         gps.setLongitude(lngPoint.toString());
-        gps.setData(currentTime.toString());
+        gps.setData(currentTime);
 
         if(saveGPSRegistersAsArray){
             Store.objects = bd.getAllgps();
@@ -220,20 +221,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void createGPSpoints(View view)
     {
+        long currentTime = Calendar.getInstance().getTime().getTime();
+
         // Pontos ao redor do Shopping Iguatemi - Caxias do Sul
-        final ArrayList<GPSClass> test = new ArrayList<>();
-        test.add(new GPSClass("-29.176038","-51.219557","data"));
-        test.add(new GPSClass("-29.175973","-51.219703","data"));
-        test.add(new GPSClass("-29.175876","-51.219902","data"));
-        test.add(new GPSClass("-29.175658","-51.220337","data"));
-        test.add(new GPSClass("-29.176111","-51.219406","data"));
-        test.add(new GPSClass("-29.175831","-51.221119","data"));
-        test.add(new GPSClass("-29.176077","-51.221172","data"));
-        test.add(new GPSClass("-29.176324","-51.221148","data"));
-        test.add(new GPSClass("-29.176649","-51.221092","data"));
-        test.add(new GPSClass("-29.176130","-51.219306","data"));
-        test.add(new GPSClass("-29.175995","-51.219118","data"));
-        test.add(new GPSClass("-29.175831","-51.219027","data"));
+        final ArrayList<GPSClass> listaGPS = new ArrayList<>();
+        listaGPS.add(new GPSClass("-29.175973","-51.219703",currentTime));
+        listaGPS.add(new GPSClass("-29.175876","-51.219902",currentTime));
+        listaGPS.add(new GPSClass("-29.175658","-51.220337",currentTime));
+        listaGPS.add(new GPSClass("-29.176111","-51.219406",currentTime));
+        listaGPS.add(new GPSClass("-29.175831","-51.221119",currentTime));
+        listaGPS.add(new GPSClass("-29.176077","-51.221172",currentTime));
+        listaGPS.add(new GPSClass("-29.176324","-51.221148",currentTime));
+        listaGPS.add(new GPSClass("-29.176649","-51.221092",currentTime));
+        listaGPS.add(new GPSClass("-29.176130","-51.219306",currentTime));
+        listaGPS.add(new GPSClass("-29.175995","-51.219118",currentTime));
+        listaGPS.add(new GPSClass("-29.175831","-51.219027",currentTime));
+        listaGPS.add(new GPSClass("-29.176038","-51.219557",currentTime));
+
+        Store.objects = listaGPS;
+    }
+
+    public void createSteps(View view)
+    {
+        long currentTime = Calendar.getInstance().getTime().getTime();
+
+        bd.addSteps(new StepsClass(3276,currentTime - MILLISECONDSBYDAY));
+        bd.addSteps(new StepsClass(2132,currentTime - MILLISECONDSBYDAY*2));
+        bd.addSteps(new StepsClass(4533,currentTime - MILLISECONDSBYDAY*3));
+        bd.addSteps(new StepsClass(1233,currentTime - MILLISECONDSBYDAY*4));
+        bd.addSteps(new StepsClass(8783,currentTime - MILLISECONDSBYDAY*5));
+
+        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*6));
+        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*7));
+        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*8));
+        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*9));
+        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*10));
+        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*11));
+        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*12));
+        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*13));
+        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*14));
     }
 
     //-------pedometer configurations-------
@@ -263,11 +289,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if(numStepsAuxJr > STEPS_TO_SAVE_STEPS)
         {
-            Date currentTime = Calendar.getInstance().getTime();
+            long currentTime = Calendar.getInstance().getTime().getTime();
 
             StepsClass steps = new StepsClass();
-            steps.setPassos(Integer.toString(numStepsAuxJr));
-            steps.setData(currentTime.toString());
+            steps.setPassos(numStepsAuxJr);
+            steps.setData(currentTime);
 
             bd.addSteps(steps);
 
