@@ -17,8 +17,6 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
 {
     private static final int DATABASE_VERSION = 1;
 
-    private static final String DATABASE_NAME = "mobileAppProject03DB";
-
     //-------tabela para GPS-------
     private static final String TABELA_GPS = "tabela_GPS";
     private static final String ID = "id";
@@ -40,9 +38,9 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
     //constante do carajo
     private final long MILLISECONDSBYDAY = 86400000;
 
-    public BDSQLiteHelper(Context context)
+    public BDSQLiteHelper(Context context, String DataBaseName)
     {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, DataBaseName, null, DATABASE_VERSION);
     }
 
     @Override
@@ -192,6 +190,26 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
         }
 
         return listaPassos;
+    }
+
+    public int getTodaySteps(){
+        Date hoje = new Date();
+        Calendar fimDia = Calendar.getInstance();
+
+        fimDia.setTime(hoje);
+
+        long beginDay = Calendar.getInstance().getTime().getTime() - MILLISECONDSBYDAY;
+        long endDay = fimDia.getTime().getTime();
+
+        String query = "SELECT SUM( " + PASSOS + " ) as Total FROM " + TABELA_PASSOS + " WHERE " + DATA_PASSOS + " BETWEEN " + beginDay + " AND " + endDay;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(cursor.getColumnIndex("Total"));
+        }
+
+        return 0;
     }
 
     public ArrayList<StepsClass> get1WeekSteps()

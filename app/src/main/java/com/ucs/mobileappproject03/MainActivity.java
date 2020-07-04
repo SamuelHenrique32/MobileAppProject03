@@ -60,10 +60,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //-------pedometer configurations-------
 
     public BDSQLiteHelper bd;
+    private static final String DATABASE_NAME = "mobileAppProject03DB";
+    private static final String DATABASE_NAME_TEST = "mobileAppProject03DBTest";
+
 
     private final int STEPS_TO_SAVE_REGISTER = 10;
     private final int STEPS_TO_SAVE_STEPS = 100;
-    private final int STEPS_DAILY_GOAL = 4500;
     private final long MILLISECONDSBYDAY = 86400000;
 
     @Override
@@ -95,8 +97,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         fragmentTransaction.commit();
 
-        bd = new BDSQLiteHelper(this.getBaseContext());
-        Store.bdTestSteps = bd;
+        bd = new BDSQLiteHelper(this.getBaseContext(), DATABASE_NAME);
+        Store.bd = bd;
+        Store.bdTestSteps = new BDSQLiteHelper(this.getBaseContext(), DATABASE_NAME_TEST);
 
         //loadMapButton = findViewById(R.id.button);
 
@@ -110,10 +113,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //-------pedometer configurations-------
 
         askForPermissions();
-
-        createTestSteps();
-
-        Store.inTest = false;
     }
 
     @Override
@@ -214,19 +213,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             numStepsAux = 0;
             bd.addPosition(gps);
+            Store.bd = bd;
             Store.objects = bd.getAllgps();
         }
 
         //ArrayList<GPSClass> registers = bd.getAllgps();
     }
 
-    public void createTestSteps()
+    /*public void createTestSteps()
     {
         long currentTime = Calendar.getInstance().getTime().getTime();
 
         Store.bdTestSteps.deleteAllStepsRegisters();
 
-        Store.bdTestSteps.addSteps(new StepsClass(3276,currentTime - MILLISECONDSBYDAY));
+        /*Store.bdTestSteps.addSteps(new StepsClass(3276,currentTime));
+        Store.bdTestSteps.addSteps(new StepsClass(3200,currentTime - MILLISECONDSBYDAY));
         Store.bdTestSteps.addSteps(new StepsClass(2132,currentTime - MILLISECONDSBYDAY*2));
         Store.bdTestSteps.addSteps(new StepsClass(4533,currentTime - MILLISECONDSBYDAY*3));
         Store.bdTestSteps.addSteps(new StepsClass(1233,currentTime - MILLISECONDSBYDAY*4));
@@ -240,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*12));
         Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*13));
         Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*14));
-    }
+    }*/
 
     //-------pedometer configurations-------
     @Override
@@ -276,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             steps.setData(currentTime);
 
             bd.addSteps(steps);
+            Store.bd = bd;
 
             numStepsAuxJr = 0;
         }

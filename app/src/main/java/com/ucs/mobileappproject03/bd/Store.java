@@ -9,5 +9,7 @@ public class Store {
 
     public static BDSQLiteHelper bdTestSteps;
 
-    public static Boolean inTest;
+    public static BDSQLiteHelper bd;
+
+    public static Boolean inTest = false;
 }

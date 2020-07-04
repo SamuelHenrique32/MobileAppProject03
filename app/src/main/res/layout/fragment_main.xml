@@ -7,12 +7,11 @@
 
     <TextView
         android:id="@+id/txtStepsDescription"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginLeft="1dp"
         android:layout_marginTop="106dp"
         android:layout_marginBottom="342dp"
+        android:gravity="center"
         android:text="Passos Hoje"
         android:textSize="56sp"
         app:layout_constraintBottom_toTopOf="@+id/txtStepsGoalDescription2"
@@ -23,12 +22,11 @@
 
     <TextView
         android:id="@+id/txtStepsQuantity"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginLeft="22dp"
+        android:gravity="center"
         android:layout_marginTop="26dp"
-        android:text="4026"
+        android:text=""
         android:textColor="#51D609"
         android:textSize="56sp"
         app:layout_constraintStart_toStartOf="@+id/txtStepsGoalDescription1"
@@ -36,8 +34,9 @@
 
     <TextView
         android:id="@+id/txtStepsGoalDescription1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_marginBottom="33dp"
         android:text="Faltam"
         android:textSize="56sp"
@@ -47,12 +46,11 @@
 
     <TextView
         android:id="@+id/txtStepsGoalQuantity"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="38dp"
-        android:layout_marginRight="38dp"
+        android:gravity="center"
         android:layout_marginBottom="11dp"
-        android:text="474"
+        android:text=""
         android:textColor="#FF0000"
         android:textSize="56sp"
         app:layout_constraintBottom_toTopOf="@+id/txtStepsGoalDescription2"
@@ -60,8 +58,9 @@
 
     <TextView
         android:id="@+id/txtStepsGoalDescription2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_marginBottom="52dp"
         android:text="Para a Meta"
         android:textSize="56sp"
@@ -70,20 +69,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtStepsDescription" />
 
-    <TextView
-        android:id="@+id/stepsQtt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:text=" "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/txtStepsDescription"
-        app:layout_constraintTop_toTopOf="@+id/txtStepsDescription" />
-
     <Button
         android:id="@+id/testButton"
         android:layout_width="66dp"
         android:layout_height="56dp"
+        android:gravity="center"
         android:layout_marginEnd="14dp"
         android:layout_marginRight="14dp"
         android:layout_marginBottom="25dp"
