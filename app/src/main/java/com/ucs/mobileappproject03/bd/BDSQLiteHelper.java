@@ -131,7 +131,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
         long beginDay = inicioDia.getTime().getTime();
         long endDay = fimDia.getTime().getTime();
 
-        String query = "SELECT * FROM " + TABELA_GPS + " WHERE " + DATA + " BETWEEN " + beginDay + " AND " + endDay + " ORDER BY " + ID;
+        String query = "SELECT * FROM " + TABELA_GPS + " WHERE " + DATA + " BETWEEN " + beginDay + " AND " + endDay;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
@@ -155,6 +155,15 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
         db.close();
 
         return stepsID;
+    }
+
+    public void deleteAllStepsRegisters() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("DELETE FROM " + TABELA_PASSOS);
+
+        db.close();
     }
 
     private StepsClass cursorToSteps(Cursor cursor)

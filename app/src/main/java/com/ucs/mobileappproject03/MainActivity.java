@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
-    Button loadMapButton;
     public boolean saveGPSRegistersAsArray = true;
 
     //-------pedometer configurations-------
@@ -97,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.commit();
 
         bd = new BDSQLiteHelper(this.getBaseContext());
+        Store.bdTestSteps = bd;
 
         //loadMapButton = findViewById(R.id.button);
 
@@ -110,6 +110,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //-------pedometer configurations-------
 
         askForPermissions();
+
+        createTestSteps();
+
+        Store.inTest = false;
     }
 
     @Override
@@ -205,7 +209,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             saveGPSRegistersAsArray = false;
         }
 
-        if(numStepsAux > STEPS_TO_SAVE_REGISTER)
+        //if(numStepsAux >= STEPS_TO_SAVE_REGISTER)
+        if((numStepsAux <= STEPS_TO_SAVE_REGISTER) && (!Store.inTest))
         {
             numStepsAux = 0;
             bd.addPosition(gps);
@@ -215,51 +220,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //ArrayList<GPSClass> registers = bd.getAllgps();
     }
 
-    public void goToHeatMap(View view){
-
-    }
-
-    public void createGPSpoints(View view)
+    public void createTestSteps()
     {
         long currentTime = Calendar.getInstance().getTime().getTime();
 
-        // Pontos ao redor do Shopping Iguatemi - Caxias do Sul
-        final ArrayList<GPSClass> listaGPS = new ArrayList<>();
-        listaGPS.add(new GPSClass("-29.175973","-51.219703",currentTime));
-        listaGPS.add(new GPSClass("-29.175876","-51.219902",currentTime));
-        listaGPS.add(new GPSClass("-29.175658","-51.220337",currentTime));
-        listaGPS.add(new GPSClass("-29.176111","-51.219406",currentTime));
-        listaGPS.add(new GPSClass("-29.175831","-51.221119",currentTime));
-        listaGPS.add(new GPSClass("-29.176077","-51.221172",currentTime));
-        listaGPS.add(new GPSClass("-29.176324","-51.221148",currentTime));
-        listaGPS.add(new GPSClass("-29.176649","-51.221092",currentTime));
-        listaGPS.add(new GPSClass("-29.176130","-51.219306",currentTime));
-        listaGPS.add(new GPSClass("-29.175995","-51.219118",currentTime));
-        listaGPS.add(new GPSClass("-29.175831","-51.219027",currentTime));
-        listaGPS.add(new GPSClass("-29.176038","-51.219557",currentTime));
+        Store.bdTestSteps.deleteAllStepsRegisters();
 
-        Store.objects = listaGPS;
-    }
-
-    public void createSteps(View view)
-    {
-        long currentTime = Calendar.getInstance().getTime().getTime();
-
-        bd.addSteps(new StepsClass(3276,currentTime - MILLISECONDSBYDAY));
-        bd.addSteps(new StepsClass(2132,currentTime - MILLISECONDSBYDAY*2));
-        bd.addSteps(new StepsClass(4533,currentTime - MILLISECONDSBYDAY*3));
-        bd.addSteps(new StepsClass(1233,currentTime - MILLISECONDSBYDAY*4));
-        bd.addSteps(new StepsClass(8783,currentTime - MILLISECONDSBYDAY*5));
-
-        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*6));
-        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*7));
-        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*8));
-        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*9));
-        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*10));
-        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*11));
-        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*12));
-        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*13));
-        bd.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*14));
+        Store.bdTestSteps.addSteps(new StepsClass(3276,currentTime - MILLISECONDSBYDAY));
+        Store.bdTestSteps.addSteps(new StepsClass(2132,currentTime - MILLISECONDSBYDAY*2));
+        Store.bdTestSteps.addSteps(new StepsClass(4533,currentTime - MILLISECONDSBYDAY*3));
+        Store.bdTestSteps.addSteps(new StepsClass(1233,currentTime - MILLISECONDSBYDAY*4));
+        Store.bdTestSteps.addSteps(new StepsClass(8783,currentTime - MILLISECONDSBYDAY*5));
+        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*6));
+        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*7));
+        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*8));
+        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*9));
+        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*10));
+        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*11));
+        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*12));
+        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*13));
+        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*14));
     }
 
     //-------pedometer configurations-------

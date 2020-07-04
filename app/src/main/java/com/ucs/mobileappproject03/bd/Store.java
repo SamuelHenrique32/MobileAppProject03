@@ -6,4 +6,8 @@ import java.util.ArrayList;
 public class Store {
 
     public static ArrayList<GPSClass> objects;
+
+    public static BDSQLiteHelper bdTestSteps;
+
+    public static Boolean inTest;
 }
