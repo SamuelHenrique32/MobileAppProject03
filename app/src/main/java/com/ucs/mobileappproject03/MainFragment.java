@@ -119,6 +119,8 @@ public class MainFragment extends Fragment {
         Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*12));
         Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*13));
         Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*14));
+        Store.bdTestSteps.addSteps(new StepsClass(2000,currentTime - MILLISECONDSBYDAY*40));
+        Store.bdTestSteps.addSteps(new StepsClass(3000,currentTime - MILLISECONDSBYDAY*60));
     }
 
     public void calculateTodaySteps(){

@@ -14,6 +14,7 @@ import com.ucs.mobileappproject03.localization.HeatmapsDemoActivity;
 import java.util.ArrayList;
 
 public class FragmentSecond extends Fragment {
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -8,10 +8,9 @@
 
     <TextView
         android:id="@+id/txtStepsWeekDescription"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
+        android:gravity="center"
         android:layout_marginTop="72dp"
         android:text="Passos Nessa Semana"
         android:textSize="35sp"
@@ -20,10 +19,9 @@
 
     <TextView
         android:id="@+id/txtStepsWeekValue"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
-        android:layout_marginLeft="136dp"
+        android:gravity="center"
         android:layout_marginTop="160dp"
         android:text="4026"
         android:textColor="#0049C6"
@@ -33,10 +31,9 @@
 
     <TextView
         android:id="@+id/txtStepsMonthDescription"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
+        android:gravity="center"
         android:layout_marginTop="272dp"
         android:text="Passos Nesse Mês"
         android:textSize="36sp"
@@ -45,10 +42,9 @@
 
     <TextView
         android:id="@+id/txtStepsMonthValue"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="156dp"
-        android:layout_marginLeft="156dp"
+        android:gravity="center"
         android:layout_marginTop="352dp"
         android:text="474"
         android:textColor="#0049C6"
@@ -58,10 +54,9 @@
 
     <TextView
         android:id="@+id/txtStepsTotalDescription"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:layout_marginLeft="76dp"
+        android:gravity="center"
         android:layout_marginTop="468dp"
         android:text="Passos no Total"
         android:textSize="36sp"
@@ -70,24 +65,14 @@
 
     <TextView
         android:id="@+id/txtStepsTotalValue"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="156dp"
-        android:layout_marginLeft="156dp"
+        android:gravity="center"
         android:layout_marginTop="556dp"
         android:text="474"
         android:textColor="#0049C6"
         android:textSize="56sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/stepsQtt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="102dp"
-        android:text=" "
-        app:layout_constraintStart_toEndOf="@+id/txtStepsDescription"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -174,24 +174,6 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
         return steps;
     }
 
-    public ArrayList<StepsClass> getAllSteps()
-    {
-        ArrayList<StepsClass> listaPassos = new ArrayList<StepsClass>();
-
-        String query = "SELECT * FROM " + TABELA_PASSOS + " ORDER BY " + IDpassos;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                StepsClass steps = cursorToSteps(cursor);
-                listaPassos.add(steps);
-            } while (cursor.moveToNext());
-        }
-
-        return listaPassos;
-    }
-
     public int getTodaySteps(){
         Date hoje = new Date();
         Calendar fimDia = Calendar.getInstance();
@@ -212,36 +194,29 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
         return 0;
     }
 
-    public ArrayList<StepsClass> get1WeekSteps()
+    public int getWeekSteps()
     {
-        ArrayList<StepsClass> listaPassos = new ArrayList<StepsClass>();
-
         Date hoje = new Date();
         Calendar fimDia = Calendar.getInstance();
 
         fimDia.setTime(hoje);
 
-        long beginDay = Calendar.getInstance().getTime().getTime() - MILLISECONDSBYDAY*6;
+        long beginDay = Calendar.getInstance().getTime().getTime() - MILLISECONDSBYDAY*7;
         long endDay = fimDia.getTime().getTime();
 
-        String query = "SELECT * FROM " + TABELA_PASSOS + " WHERE " + DATA_PASSOS + " BETWEEN " + beginDay + " AND " + endDay + " ORDER BY " + IDpassos;
+        String query = "SELECT SUM( " + PASSOS + " ) as Total FROM " + TABELA_PASSOS + " WHERE " + DATA_PASSOS + " BETWEEN " + beginDay + " AND " + endDay;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
-            do {
-                StepsClass steps = cursorToSteps(cursor);
-                listaPassos.add(steps);
-            } while (cursor.moveToNext());
+            return cursor.getInt(cursor.getColumnIndex("Total"));
         }
 
-        return listaPassos;
+        return 0;
     }
 
-    public ArrayList<StepsClass> get1MonthSteps()
+    public int getMonthSteps()
     {
-        ArrayList<StepsClass> listaPassos = new ArrayList<StepsClass>();
-
         Date hoje = new Date();
         Calendar fimDia = Calendar.getInstance();
 
@@ -250,18 +225,35 @@ public class BDSQLiteHelper extends SQLiteOpenHelper
         long beginDay = Calendar.getInstance().getTime().getTime() - MILLISECONDSBYDAY*30;
         long endDay = fimDia.getTime().getTime();
 
-//        String query = "SELECT FROM " + TABELA_PASSOS + " WHERE " + DATA_PASSOS + " BETWEEN " + beginDay + " AND " + endDay + " ORDER BY " + IDpassos;
-        String query = "SELECT SUM( " + PASSOS + " ) FROM " + TABELA_PASSOS + " WHERE " + DATA_PASSOS + " BETWEEN " + beginDay + " AND " + endDay + " ORDER BY " + IDpassos;
+        String query = "SELECT SUM( " + PASSOS + " ) as Total FROM " + TABELA_PASSOS + " WHERE " + DATA_PASSOS + " BETWEEN " + beginDay + " AND " + endDay;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
-            do {
-                StepsClass steps = cursorToSteps(cursor);
-                listaPassos.add(steps);
-            } while (cursor.moveToNext());
+            return cursor.getInt(cursor.getColumnIndex("Total"));
         }
 
-        return listaPassos;
+        return 0;
+    }
+
+    public int getAllSteps()
+    {
+        Date hoje = new Date();
+        Calendar fimDia = Calendar.getInstance();
+
+        fimDia.setTime(hoje);
+
+        long beginDay = Calendar.getInstance().getTime().getTime() - MILLISECONDSBYDAY*30;
+        long endDay = fimDia.getTime().getTime();
+
+        String query = "SELECT SUM( " + PASSOS + " ) as Total FROM " + TABELA_PASSOS;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(cursor.getColumnIndex("Total"));
+        }
+
+        return 0;
     }
 }

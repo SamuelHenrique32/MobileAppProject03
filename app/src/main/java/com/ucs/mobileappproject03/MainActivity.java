@@ -217,31 +217,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Store.objects = bd.getAllgps();
         }
 
-        //ArrayList<GPSClass> registers = bd.getAllgps();
     }
-
-    /*public void createTestSteps()
-    {
-        long currentTime = Calendar.getInstance().getTime().getTime();
-
-        Store.bdTestSteps.deleteAllStepsRegisters();
-
-        /*Store.bdTestSteps.addSteps(new StepsClass(3276,currentTime));
-        Store.bdTestSteps.addSteps(new StepsClass(3200,currentTime - MILLISECONDSBYDAY));
-        Store.bdTestSteps.addSteps(new StepsClass(2132,currentTime - MILLISECONDSBYDAY*2));
-        Store.bdTestSteps.addSteps(new StepsClass(4533,currentTime - MILLISECONDSBYDAY*3));
-        Store.bdTestSteps.addSteps(new StepsClass(1233,currentTime - MILLISECONDSBYDAY*4));
-        Store.bdTestSteps.addSteps(new StepsClass(8783,currentTime - MILLISECONDSBYDAY*5));
-        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*6));
-        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*7));
-        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*8));
-        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*9));
-        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*10));
-        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*11));
-        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*12));
-        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*13));
-        Store.bdTestSteps.addSteps(new StepsClass(1000,currentTime - MILLISECONDSBYDAY*14));
-    }*/
 
     //-------pedometer configurations-------
     @Override
