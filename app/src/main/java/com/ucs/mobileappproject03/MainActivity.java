@@ -128,10 +128,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if(menuItem.getItemId() == R.id.another){
-            fragmentManager = getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_fragment, new FragmentSecond());
-            fragmentTransaction.commit();
+            if((Store.objects == null) || (Store.objects.size() == 0)){
+                Toast.makeText(this, "Aguarde a Aquisição de Dados do GPS", Toast.LENGTH_LONG).show();
+            } else{
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_fragment, new FragmentSecond());
+                fragmentTransaction.commit();
+            }
         }
 
         if(menuItem.getItemId() == R.id.statistics){
