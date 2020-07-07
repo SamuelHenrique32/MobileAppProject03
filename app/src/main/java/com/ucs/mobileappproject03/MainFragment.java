@@ -138,4 +138,9 @@ public class MainFragment extends Fragment {
 
         txtStepsRemainingToGoal.setText(Integer.toString(STEPS_DAILY_GOAL-todaySteps));
     }
+
+    public void updateSteps(int steps)
+    {
+        txtStepsToday.setText(Integer.toString(steps));
+    }
 }

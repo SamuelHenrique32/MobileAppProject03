@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int numSteps;
     private int numStepsAux;
     private int numStepsAuxJr;
-    TextView stepsQtt;
     //-------pedometer configurations-------
 
     public BDSQLiteHelper bd;
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private final int STEPS_TO_SAVE_REGISTER = 10;
-    private final int STEPS_TO_SAVE_STEPS = 100;
+    private final int STEPS_TO_SAVE_STEPS = 10;
     private final long MILLISECONDSBYDAY = 86400000;
 
     @Override
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         simpleStepDetector = new StepDetector();
         simpleStepDetector.registerListener(this);
         sensorManager.registerListener(MainActivity.this, accel, SensorManager.SENSOR_DELAY_FASTEST);
-        stepsQtt = (TextView) findViewById(R.id.stepsQtt);
+        numSteps = bd.getTodaySteps();
         //-------pedometer configurations-------
 
         askForPermissions();
@@ -246,6 +245,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(numStepsAux > STEPS_TO_SAVE_REGISTER)
         {
             configurarServico();
+
+            //update steps today
+            try{    //medida paliativa
+                MainFragment mainFragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.container_fragment);
+                mainFragment.updateSteps(numSteps);
+            }catch (Exception e){}
         }
 
         if(numStepsAuxJr > STEPS_TO_SAVE_STEPS)
